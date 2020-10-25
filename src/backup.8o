@@ -1,5 +1,7 @@
 :alias spritex ve
 :alias spritey vd
+:alias signx vc
+:alias signy v3
 :alias enemyx vb
 :alias enemyy va
 :alias cloudx v4
@@ -50,8 +52,8 @@
 :stringmode print "ABCDEFGHIJKLMNOPQRSTUVWXYZ.,!?' " {
 	:calc addr { font-4x3 + VALUE * 4 }
 	i := addr
-	sprite spritex spritey 4
-	spritex += 4
+	sprite signx signy 4
+	signx += 4
 }
 
 : move-sprite
@@ -103,37 +105,35 @@
   again
 	# Prints title
 	plane 1
-	spritex := 10
-	spritey := 10
-	print "LADY RUNNER"
+	signx := 10
+	signy := 10
 
 	enemyx := 35
 	enemyy := 15
-	spritex := 20
+	spritex := 5
 	spritey := 17
 	score := 0
 	scorex := 29
 	scorey := 1
-
+	print "LADY RUNNER"
 	loop
 		clear
 		i := hex score
 		sprite scorex scorey 5
+		
 		if enemyx == 63 then vf := 0
 		
 		plane 3
-		enemyx := -4
+		enemyx += -9
 		i := enemy
 		sprite enemyx enemyy 0
 		
 		plane 1
 		i := hero-sprite
-		loop
-			move-sprite
-		again
 		if gframe == 1 then i := hero-sprite-two
 		gframe += 1
 		if gframe == 2 then gframe := 0
+		
 		
 		if gframe < 2 begin
 			v0 := 6
@@ -142,20 +142,17 @@
 			
 		if gframe == 3 begin
 			i := sprite-attack
+			spritey := 15
 		end
 		
+		if gframe == 4 begin
+			i := hero-sprite
+			spritey := 17
+		end
+			
 		sprite spritex spritey 15
 		
-		if gframe == 4 then gframe := 1
-		
-		if enemyx == 3 begin
-			enemyx := 63
-			if vf == 1 begin
-				score := 0
-			else
-				score += 1
-			end
-		end
+		if gframe == 5 then gframe := 1
 
 	  loop
       v0 := delay
@@ -164,4 +161,4 @@
 		vf := delay-time
 		delay := vf
 	again
-;
+
